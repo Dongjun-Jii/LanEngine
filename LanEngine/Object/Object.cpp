@@ -1,7 +1,7 @@
 #include "Defines.h"
 #include "Object.h"
 #include "../Component/Component.h"
-#include "../Component/TransformComponent.h"
+#include "../Component/Transform.h"
 #include <utility>
 #include <map>
 #include <iterator>
@@ -17,7 +17,7 @@ namespace Lan
 		m_Scene(nullptr),
 		m_Parent(nullptr)
 	{
-		addComponent((*(new TransformComponent())));
+		addComponent<Transform>();
 	}
 
 	Object::~Object()
@@ -98,33 +98,9 @@ namespace Lan
 		}
 	}
 
-	void Object::addComponent(Component& component)
+	Transform& Object::getTransform()
 	{
-		if (m_Components.count(typeid(component).name()) > 0)
-		{
-			LOG(LogLevel::Warning, "있는 컴포넌트를 다시 추가하려고 시도함");
-			return;
-		}
-
-		m_Components.insert(make_pair(typeid(component).name(), &component));
-		component.setParent(this);
-	}
-
-	void Object::removeComponent(Component& component)
-	{
-		if (m_Components.count(typeid(component).name()) < 1)
-		{
-			LOG(LogLevel::Warning, "없는 컴포넌트를 삭제하려고 시도함");
-			return;
-		}
-
-		m_GarbageCollector.push_back(Garbage(GarbageType::ComponentType, static_cast<void*>(&component)));
-		component.setParent(nullptr);
-	}
-
-	TransformComponent& Object::getTransformComponent()
-	{
-		return *(getComponent<TransformComponent>());
+		return *(getComponent<Transform>());
 	}
 
 	void Object::addChild(Object& object)

@@ -1,37 +1,69 @@
 #define LOG_MIN_LEVEL 1
 #define USE_CONSOLE
 #include <LanEngine.h>
-#include <Component/SquareComponent.h>
-#include <Component/TransformComponent.h>
+#include <Component/Square.h>
+#include <Component/Transform.h>
 #include <Component/SpriteRenderer.h>
+#include <Component/Camera.h>
 
 using namespace Lan;
 
 class TestObject : public Object
 {
 public:
-	TestObject()
+	TestObject(int z, fvec2 pos)
 	{
-		addComponent(*(new SquareComponent({ 1,1 })));
-		addComponent(*(new SpriteRenderer("test")));
+		addComponent<Square>(fvec2(100, 100));
+		addComponent<SpriteRenderer>("test");
+		getTransform().position = pos;
 	}
 protected:
 	virtual void onUpdate(Context& context)
 	{
 		if (Input::getInstance().isKeyDown('A'))
 		{
-			getTransformComponent().angle += 1.0f;
+			getTransform().angle += 1.0f;
 		}
 
 		if (Input::getInstance().isKeyPressed('B'))
 		{
-			getTransformComponent().position.x += 0.25f;
+			getTransform().position.x += 0.25f;
 		}
 
 		if (Input::getInstance().isKeyPressed('C'))
 		{
-			getTransformComponent().size.x += 0.25f;
+			getTransform().size.x += 0.25f;
 		}
+	}
+};
+
+class TestCamera : public Object
+{
+public:
+	TestCamera()
+	{
+		addComponent<Camera>(fvec2(800, 600));
+	}
+protected:
+	virtual void onUpdate(Context& context)
+	{
+		if (Input::getInstance().isKeyDown(VK_UP))
+		{
+			getTransform().position.y += 0.3f;
+		}
+		if (Input::getInstance().isKeyDown(VK_DOWN))
+		{
+			getTransform().position.y -= 0.3f;
+		}
+		if (Input::getInstance().isKeyDown(VK_LEFT))
+		{
+			getTransform().position.x -= 0.3f;
+		}
+		if (Input::getInstance().isKeyDown(VK_RIGHT))
+		{
+			getTransform().position.x += 0.3f;
+		}
+		
 	}
 };
 
@@ -66,7 +98,9 @@ class TestScene : public Scene
 public:
 	TestScene()
 	{
-		addObject<TestObject>();
+		addObject<TestObject>(1, fvec2(0, 0));
+		addObject<TestObject>(0, fvec2(0.5f, 0.5f));
+		addObject<TestCamera>();
 	}
 protected:
 	virtual void onUpdate(Context& context)

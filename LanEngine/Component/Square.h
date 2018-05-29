@@ -3,12 +3,12 @@
 
 namespace Lan
 {
-	class SquareComponent : public Component
+	class Square : public Component
 	{
 	public:
-		SquareComponent(DirectX::XMFLOAT2 & size);
-		SquareComponent(DirectX::XMFLOAT2 && size);
-		virtual ~SquareComponent();
+		Square(DirectX::XMFLOAT2 & size);
+		Square(DirectX::XMFLOAT2 && size);
+		virtual ~Square();
 
 		void setSize(DirectX::XMFLOAT2 & size);
 		void setSize(DirectX::XMFLOAT2 && size);

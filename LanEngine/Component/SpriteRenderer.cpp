@@ -10,39 +10,16 @@ namespace Lan
 		m_Sprite(nullptr),
 		m_TexCoordBuffer(nullptr)
 	{
-		ID3D11Device* device = GraphicsManager::getInstance().getDevice();
-		HRESULT result;
-
-		fvec2 vertices[4] =
-		{
-			{ 0.0f, 0.0f },
-			{ 1.0f, 0.0f },
-			{ 1.0f, 1.0f },
-			{ 0.0f, 1.0f }
-		};
-
-		D3D11_BUFFER_DESC vbd;
-		vbd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-		vbd.ByteWidth = sizeof(fvec2) * 4;
-		vbd.CPUAccessFlags = 0;
-		vbd.MiscFlags = 0;
-		vbd.StructureByteStride = 0;
-		vbd.Usage = D3D11_USAGE_DEFAULT;
-
-		D3D11_SUBRESOURCE_DATA vrd;
-		vrd.pSysMem = vertices;
-		vrd.SysMemPitch = 0;
-		vrd.SysMemSlicePitch = 0;
-
-		result = device->CreateBuffer(&vbd, &vrd, &m_TexCoordBuffer);
-		if (FAILED(result))
-		{
-			LOG_WITH_TAG(LogLevel::Error, "DirectX", "Create TexCoordBuffer Error");
-		}
+		createTexCoordBuffer();
 	}
 
 	SpriteRenderer::SpriteRenderer(tstring textureName) :
 		m_Sprite(dynamic_cast<Texture *>(ResourceManager::getInstance().getResource(textureName)))
+	{
+		createTexCoordBuffer();
+	}
+
+	void SpriteRenderer::createTexCoordBuffer()
 	{
 		ID3D11Device* device = GraphicsManager::getInstance().getDevice();
 		HRESULT result;
@@ -58,10 +35,10 @@ namespace Lan
 		D3D11_BUFFER_DESC vbd;
 		vbd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 		vbd.ByteWidth = sizeof(fvec2) * 4;
-		vbd.CPUAccessFlags = 0;
+		vbd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 		vbd.MiscFlags = 0;
 		vbd.StructureByteStride = 0;
-		vbd.Usage = D3D11_USAGE_DEFAULT;
+		vbd.Usage = D3D11_USAGE_DYNAMIC;
 
 		D3D11_SUBRESOURCE_DATA vrd;
 		vrd.pSysMem = vertices;

@@ -111,12 +111,6 @@
     <ClInclude Include="Graphics\ShaderManager.h">
       <Filter>헤더 파일\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="Component\SquareComponent.h">
-      <Filter>헤더 파일\Component</Filter>
-    </ClInclude>
-    <ClInclude Include="Component\TransformComponent.h">
-      <Filter>헤더 파일\Component</Filter>
-    </ClInclude>
     <ClInclude Include="STB\stb_image.h">
       <Filter>헤더 파일\STB</Filter>
     </ClInclude>
@@ -143,6 +137,15 @@
     </ClInclude>
     <ClInclude Include="Resource\Texture.h">
       <Filter>헤더 파일\Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="Component\Transform.h">
+      <Filter>헤더 파일\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Component\Square.h">
+      <Filter>헤더 파일\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Component\Camera.h">
+      <Filter>헤더 파일\Component</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -176,17 +179,11 @@
     <ClCompile Include="Scene\SceneManager.cpp">
       <Filter>소스 파일\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="Component\TransformComponent.cpp">
-      <Filter>소스 파일\Component</Filter>
-    </ClCompile>
     <ClCompile Include="Graphics\GraphicsManager.cpp">
       <Filter>소스 파일\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="Graphics\ShaderManager.cpp">
       <Filter>소스 파일\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="Component\SquareComponent.cpp">
-      <Filter>소스 파일\Component</Filter>
     </ClCompile>
     <ClCompile Include="Resource\Resource.cpp">
       <Filter>소스 파일\Resource</Filter>
@@ -199,6 +196,15 @@
     </ClCompile>
     <ClCompile Include="Resource\Texture.cpp">
       <Filter>소스 파일\Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="Component\Transform.cpp">
+      <Filter>소스 파일\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Component\Square.cpp">
+      <Filter>소스 파일\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Component\Camera.cpp">
+      <Filter>소스 파일\Component</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

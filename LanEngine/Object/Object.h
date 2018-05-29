@@ -5,7 +5,7 @@
 #include <map>
 #include "../Scene/Scene.h"
 #include "../Defines.h"
-#include "../Component/TransformComponent.h"
+#include "../Component/Transform.h"
 
 namespace Lan
 {
@@ -23,7 +23,7 @@ namespace Lan
 
 		Scene& getScene() const;
 
-		TransformComponent& getTransformComponent();
+		Transform& getTransform();
 
 		void setActive(bool active);
 		void setVisible(bool visible);
@@ -32,8 +32,8 @@ namespace Lan
 		virtual void onUpdate(Context& context) = 0;
 		virtual void onDraw() {};
 
-		void addComponent(Component& component);
-		void removeComponent(Component& component);
+		template<typename T, typename... Args>
+		void addComponent(Args&&... args);
 		template<typename T>
 		void removeComponent();
 		template <typename T>

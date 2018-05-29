@@ -4,6 +4,21 @@
 
 namespace Lan
 {
+	template<typename T, typename... Args>
+	void Object::addComponent(Args&&... args)
+	{
+		if (m_Components.count(typeid(T).name()) > 0)
+		{
+			LOG(LogLevel::Warning, "있는 컴포넌트를 다시 추가하려고 시도함");
+			return;
+		}
+
+		T* component = new T(args...);
+
+		m_Components.insert(std::make_pair(typeid(T).name(), component));
+		component->setParent(this);
+	}
+
 	template <typename T>
 	void Object::removeComponent()
 	{

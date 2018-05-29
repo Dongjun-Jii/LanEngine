@@ -4,11 +4,11 @@
 
 namespace Lan
 {
-	class TransformComponent : public Component
+	class Transform : public Component
 	{
 	public:
-		TransformComponent();
-		~TransformComponent() = default;
+		Transform();
+		~Transform() = default;
 
 		void move(const DirectX::XMFLOAT2& offset);
 		void move(const DirectX::XMFLOAT2&& offset);

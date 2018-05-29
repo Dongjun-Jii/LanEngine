@@ -1,18 +1,18 @@
 #include "Defines.h"
-#include "SquareComponent.h"
+#include "Square.h"
 #include "../Graphics/GraphicsManager.h"
-#include "TransformComponent.h"
+#include "Transform.h"
 #include "../Object/Object.h"
 
 namespace Lan
 {
-	SquareComponent::SquareComponent(DirectX::XMFLOAT2 & size) :
-		SquareComponent(std::move(size))
+	Square::Square(DirectX::XMFLOAT2 & size) :
+		Square(std::move(size))
 	{
 
 	}
 
-	SquareComponent::SquareComponent(DirectX::XMFLOAT2 && size):
+	Square::Square(DirectX::XMFLOAT2 && size):
 		m_Size(size),
 		m_VertexBuffer(nullptr),
 		m_IndexBuffer(nullptr),
@@ -97,7 +97,7 @@ namespace Lan
 		}
 	}
 
-	SquareComponent::~SquareComponent()
+	Square::~Square()
 	{
 		if (m_VertexBuffer)
 		{
@@ -118,17 +118,17 @@ namespace Lan
 		}
 	}
 
-	void SquareComponent::setSize(DirectX::XMFLOAT2 & size)
+	void Square::setSize(DirectX::XMFLOAT2 & size)
 	{
 		m_Size = size;
 	}
 
-	void SquareComponent::setSize(DirectX::XMFLOAT2 && size)
+	void Square::setSize(DirectX::XMFLOAT2 && size)
 	{
 		m_Size = size;
 	}
 
-	void SquareComponent::resizeVertexBuffer()
+	void Square::resizeVertexBuffer()
 	{
 		ID3D11DeviceContext * deviceContext = GraphicsManager::getInstance().getDeviceContext();
 
@@ -146,7 +146,7 @@ namespace Lan
 		deviceContext->Unmap(m_VertexBuffer, 0);
 	}
 
-	void SquareComponent::onDraw()
+	void Square::onDraw()
 	{
 		ID3D11DeviceContext * deviceContext = GraphicsManager::getInstance().getDeviceContext();
 
@@ -154,23 +154,23 @@ namespace Lan
 		UINT offset = 0;
 
 		DirectX::XMMATRIX translate = DirectX::XMMatrixTranslation(
-			getParent().getTransformComponent().position.x, 
-			getParent().getTransformComponent().position.y, 
-			static_cast<float>(getParent().getTransformComponent().depth));
+			getParent().getTransform().position.x, 
+			getParent().getTransform().position.y, 
+			static_cast<float>(getParent().getTransform().depth));
 
 		DirectX::XMMATRIX rotate = DirectX::XMMatrixRotationZ(
-			getParent().getTransformComponent().angle);
+			getParent().getTransform().angle);
 
 		DirectX::XMMATRIX scale = DirectX::XMMatrixScaling(
-			getParent().getTransformComponent().size.x, 
-			getParent().getTransformComponent().size.y,
+			getParent().getTransform().size.x, 
+			getParent().getTransform().size.y,
 			1.0f);
 
 		DirectX::XMMATRIX world = scale * rotate * translate;
 
 		D3D11_MAPPED_SUBRESOURCE vmr;
 		deviceContext->Map(m_ConstantBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &vmr);
-		XMStoreFloat4x4(static_cast<DirectX::XMFLOAT4X4 *>(vmr.pData), XMMatrixTranspose(world));
+		XMStoreFloat4x4(static_cast<DirectX::XMFLOAT4X4 *>(vmr.pData), world);
 
 		deviceContext->Unmap(m_ConstantBuffer, 0);
 		

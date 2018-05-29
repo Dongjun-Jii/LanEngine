@@ -19,6 +19,8 @@ namespace Lan
 		virtual void onDraw() override;
 
 	private:
+		void createTexCoordBuffer();
+
 		Texture * m_Sprite;
 		ID3D11Buffer* m_TexCoordBuffer;
 	};

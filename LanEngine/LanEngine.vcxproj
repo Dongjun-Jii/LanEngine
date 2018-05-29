@@ -156,10 +156,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="BaseGame.h" />
+    <ClInclude Include="Component\Camera.h" />
     <ClInclude Include="Component\Component.h" />
     <ClInclude Include="Component\SpriteRenderer.h" />
-    <ClInclude Include="Component\SquareComponent.h" />
-    <ClInclude Include="Component\TransformComponent.h" />
+    <ClInclude Include="Component\Square.h" />
+    <ClInclude Include="Component\Transform.h" />
     <ClInclude Include="Context.h" />
     <ClInclude Include="Defines.h" />
     <ClInclude Include="Graphics\GraphicsManager.h" />
@@ -184,10 +185,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BaseGame.cpp" />
+    <ClCompile Include="Component\Camera.cpp" />
     <ClCompile Include="Component\Component.cpp" />
     <ClCompile Include="Component\SpriteRenderer.cpp" />
-    <ClCompile Include="Component\SquareComponent.cpp" />
-    <ClCompile Include="Component\TransformComponent.cpp" />
+    <ClCompile Include="Component\Square.cpp" />
+    <ClCompile Include="Component\Transform.cpp" />
     <ClCompile Include="Defines.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
