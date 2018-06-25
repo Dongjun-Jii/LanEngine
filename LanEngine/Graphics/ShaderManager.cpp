@@ -9,7 +9,7 @@ namespace Lan
 		m_PShader(nullptr),
 		m_Layout(nullptr)
 	{
-		ID3D11Device * device = GraphicsManager::getInstance().getDevice();
+		ID3D11Device * device = GraphicsManager::GetInstance().GetDevice();
 		HRESULT result;
 		
 		int8* vsBuffer = nullptr;
@@ -88,7 +88,7 @@ namespace Lan
 		delete[] vsBuffer;
 		delete[] psBuffer;
 
-		this->bind();
+		this->Bind();
 
 		D3D11_SAMPLER_DESC ssd;
 		ssd.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
@@ -128,9 +128,9 @@ namespace Lan
 		}
 	}
 
-	void ShaderManager::bind()
+	void ShaderManager::Bind()
 	{
-		ID3D11DeviceContext * deviceContext = GraphicsManager::getInstance().getDeviceContext();
+		ID3D11DeviceContext * deviceContext = GraphicsManager::GetInstance().GetDeviceContext();
 
 		deviceContext->VSSetShader(m_VShader, 0, 0);
 		deviceContext->PSSetShader(m_PShader, 0, 0);

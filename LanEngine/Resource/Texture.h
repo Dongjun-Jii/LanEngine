@@ -10,12 +10,12 @@ namespace Lan
 		Texture(void * buffer, tsize len, tstring path, tstring extension);
 		virtual ~Texture();
 
-		int32 getWidth() const;
-		int32 getHeight() const;
-		int32 getChannel() const;
+		int32 GetWidth() const;
+		int32 GetHeight() const;
+		int32 GetChannel() const;
 
-		ID3D11Texture2D * getTextureBuffer() const;
-		ID3D11ShaderResourceView* getTextureView() const;
+		ID3D11Texture2D * GetTextureBuffer() const;
+		ID3D11ShaderResourceView* GetTextureView() const;
 
 	private:
 		int32 m_Width;

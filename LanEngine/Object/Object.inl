@@ -5,38 +5,38 @@
 namespace Lan
 {
 	template<typename T, typename... Args>
-	void Object::addComponent(Args&&... args)
+	T* Object::AddComponent(Args&&... args)
 	{
-		if (m_Components.count(typeid(T).name()) > 0)
+		if (IsComponentExist<T>())
 		{
 			LOG(LogLevel::Warning, "있는 컴포넌트를 다시 추가하려고 시도함");
-			return;
+			return dynamic_cast<T *>(m_Components[typeid(T).name()]);
 		}
 
-		T* component = new T(args...);
+		T* component = new T(this, args...);
 
 		m_Components.insert(std::make_pair(typeid(T).name(), component));
-		component->setParent(this);
+		return component;
 	}
 
 	template <typename T>
-	void Object::removeComponent()
+	void Object::RemoveComponent()
 	{
-		if (Object::isComponentExist<T>()) m_GarbageCollector.push_back(Garbage(GarbageType::ComponentType, static_cast<void *>(m_Components[typeid(T).name])));
+		if (Object::IsComponentExist<T>()) m_GarbageCollector.push_back(m_Components[typeid(T).name]);
 		else LOG(LogLevel::Warning, "없는 컴포넌트를 삭제 시도함");
 	}
 
 	template <typename T>
-	T* Object::getComponent()
+	T* Object::GetComponent()
 	{
-		if (Object::isComponentExist<T>()) return dynamic_cast<T*>(m_Components.at(typeid(T).name()));
+		if (Object::IsComponentExist<T>()) return dynamic_cast<T*>(m_Components.at(typeid(T).name()));
 		else LOG(LogLevel::Warning, "없는 컴포넌트를 검색 시도함");
 
 		return nullptr;
 	}
 
 	template <typename T>
-	bool Object::isComponentExist()
+	bool Object::IsComponentExist()
 	{
 		if (m_Components.count(typeid(T).name()) > 0) return true;
 		else return false;

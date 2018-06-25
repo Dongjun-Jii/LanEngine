@@ -9,13 +9,13 @@ namespace Lan
 	public:
 		friend Singleton <GraphicsManager>;
 
-		void initialize(HWND windowHandle, DirectX::XMINT2 resolution, bool isFullScreen);
+		void Initialize(HWND windowHandle, DirectX::XMINT2 resolution, bool isFullScreen);
 
-		ID3D11Device * getDevice();
-		ID3D11DeviceContext * getDeviceContext();
+		ID3D11Device * GetDevice();
+		ID3D11DeviceContext * GetDeviceContext();
 
-		void beginDraw();
-		void endDraw();
+		void BeginDraw();
+		void EndDraw();
 	private:
 		GraphicsManager();
 		~GraphicsManager();

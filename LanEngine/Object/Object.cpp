@@ -17,16 +17,22 @@ namespace Lan
 		m_Scene(nullptr),
 		m_Parent(nullptr)
 	{
-		addComponent<Transform>();
+		AddComponent<Transform>();
 	}
 
 	Object::~Object()
 	{
 		for (Object* o : m_Children)
 		{
-			delete o;
+			o->m_Parent = nullptr;
 		}
 		m_Children.clear();
+
+		if (m_Parent)
+		{
+			m_Parent->m_Children.erase(this);
+		}
+
 		auto it = m_Components.begin();
 		for(; it != m_Components.end(); it++)
 		{
@@ -36,74 +42,67 @@ namespace Lan
 
 	}
 
-	Object::Garbage::Garbage(Object::GarbageType type, void* element) :
-		type(type),
-		element(element)
-	{
-
-	}
-
-	bool Object::isActive() const
+	bool Object::IsActive() const
 	{
 		return m_IsActive;
 	}
 
-	bool Object::isVisible() const
+	bool Object::IsVisible() const
 	{
 		return m_IsVisible;
 	}
 
-	Scene& Object::getScene() const
+	Scene& Object::GetScene() const
 	{
 		return *m_Scene;
 	}
 
-	void Object::update(Context& context)
+	void Object::Update(Context& context)
 	{
-		collectGarbage();
+		CollectGarbage();
 
 		if (!m_IsActive) return;
 
-		onUpdate(context);
+		OnUpdate(context);
 
 		for (auto iter = m_Components.begin(); iter != m_Components.end(); iter++)
 		{
-			iter->second->update(context);
+			iter->second->Update(context);
 		}
 
 		for (Object* child : m_Children)
 		{
-			child->update(context);
+			child->Update(context);
 		}
 	}
 
-	void Object::draw()
+	void Object::Draw()
 	{
 		if (!m_IsVisible) return;
 
-		ID3D11DeviceContext * deviceContext = GraphicsManager::getInstance().getDeviceContext();
+		ID3D11DeviceContext * deviceContext = GraphicsManager::GetInstance().GetDeviceContext();
 
-		onDraw();
+		OnDraw();
 
 		for (auto iter = m_Components.begin(); iter != m_Components.end(); iter++)
 		{
-			iter->second->draw();
+			iter->second->Draw();
 		}
 
 		deviceContext->DrawIndexed(6, 0, 0);
 
 		for (Object* child : m_Children)
 		{
-			child->draw();
+			child->Draw();
 		}
 	}
 
-	Transform& Object::getTransform()
+	Transform& Object::GetTransform()
 	{
-		return *(getComponent<Transform>());
+		return *(GetComponent<Transform>());
 	}
 
-	void Object::addChild(Object& object)
+	void Object::AddChild(Object& object)
 	{
 		if (m_Children.count(&object) > 0)
 		{
@@ -112,9 +111,10 @@ namespace Lan
 		}
 
 		m_Children.insert(&object);
+		object.SetParent(this);
 	}
 
-	void Object::removeChild(Object& object)
+	void Object::RemoveChild(Object& object)
 	{
 		if (m_Children.count(&object) < 1)
 		{
@@ -122,74 +122,83 @@ namespace Lan
 			return;
 		}
 
-		m_GarbageCollector.push_back(Garbage(GarbageType::ObjectType, static_cast<void*>(&object)));
+		object.m_Parent = nullptr;
+		m_Children.erase(&object);
 	}
 
-	const std::set<Object*>& Object::getChildren() const
+	const std::set<Object*>& Object::GetChildren() const
 	{
 		return m_Children;
 	}
 
-	bool Object::isChildExist(Object& object)
+	bool Object::IsChildExist(Object& object)
 	{
 		if (m_Children.count(&object) > 0) return true;
 		else return false;
 	}
 
-	void Object::setActive(bool active)
+	void Object::SetActive(bool active)
 	{
 		m_IsActive = active;
 	}
 
-	void Object::setVisible(bool visible)
+	void Object::SetVisible(bool visible)
 	{
 		m_IsVisible = visible;
 	}
 
-	void Object::setScene(Scene* scene)
+	void Object::SetScene(Scene* scene)
 	{
 		m_Scene = scene;
 	}
 
-	void Object::setParent(Object* object)
+	void Object::SetParent(Object* object)
 	{
-		m_Parent = object;
+		if (m_Parent)
+		{
+			m_Parent->RemoveChild(*this);
+		}
+
+		if (object)
+		{
+			m_Parent = object;
+			if (!m_Parent->IsChildExist(*this))
+			{
+				m_Parent->m_Children.insert(this);
+			}
+		}
+		
 	}
 
-	tsize Object::getChildCount() const
+	Object* Object::GetParent() const
+	{
+		if (m_Parent)
+		{
+			return m_Parent;
+		}
+		else
+		{
+			return nullptr;
+		}
+	}
+
+	tsize Object::GetChildCount() const
 	{
 		return m_Children.size();
 	}
 
-	void Object::collectGarbage()
+	void Object::CollectGarbage()
 	{
-		for (Garbage garbage : m_GarbageCollector)
+		for (Component* component : m_GarbageCollector)
 		{
-			Component* component = reinterpret_cast<Component *>(garbage.element);
-			Object* object = reinterpret_cast<Object *>(garbage.element);
-			switch (garbage.type)
+			if (m_Components.count(typeid(*component).name()) < 1)
 			{
-			case GarbageType::ComponentType:
-				if (m_Components.count(typeid(component).name()) < 1)
-				{
-					LOG(LogLevel::Error, "컴포넌트제거 오류");
-					break;
-				}
-
-				m_Components.erase(typeid(component).name());
-				delete component;
-				break;
-			case GarbageType::ObjectType:
-				if (isChildExist(*object))
-				{
-					LOG(LogLevel::Error, "차일드 제거 오류");
-					break;
-				}
-
-				m_Children.erase(object);
-				delete object;
+				LOG(LogLevel::Error, "컴포넌트제거 오류");
 				break;
 			}
+
+			m_Components.erase(typeid(*component).name());
+			delete component;
 		}
 
 		m_GarbageCollector.clear();

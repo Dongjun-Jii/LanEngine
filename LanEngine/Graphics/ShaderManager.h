@@ -8,7 +8,7 @@ namespace Lan
 	public:
 		friend Singleton<ShaderManager>;
 
-		void bind();
+		void Bind();
 
 	private:
 		ShaderManager();

@@ -18,7 +18,7 @@ namespace Lan
 
 	GraphicsManager::~GraphicsManager()
 	{
-		ShaderManager::destroyInstance();
+		ShaderManager::DestroyInstance();
 		if (m_SwapChain)
 		{
 			m_SwapChain->Release();
@@ -56,7 +56,7 @@ namespace Lan
 		}
 	}
 
-	void GraphicsManager::initialize(HWND windowHandle, DirectX::XMINT2 resolution, bool isFullScreen)
+	void GraphicsManager::Initialize(HWND windowHandle, DirectX::XMINT2 resolution, bool isFullScreen)
 	{
 		HRESULT result;
 
@@ -139,26 +139,26 @@ namespace Lan
 		m_DeviceContext->OMSetRenderTargets(1, &m_RenderTargetView, m_DepthStencilView);
 	}
 
-	ID3D11Device * GraphicsManager::getDevice()
+	ID3D11Device * GraphicsManager::GetDevice()
 	{
 		return m_Device;
 	}
 
-	ID3D11DeviceContext * GraphicsManager::getDeviceContext()
+	ID3D11DeviceContext * GraphicsManager::GetDeviceContext()
 	{
 		return m_DeviceContext;
 	}
 
-	void GraphicsManager::beginDraw()
+	void GraphicsManager::BeginDraw()
 	{
 		float bg[4] = { 0.0f, 1.0f, 1.0f, 0.0f };
 		m_DeviceContext->ClearRenderTargetView(m_RenderTargetView, bg);
 		m_DeviceContext->ClearDepthStencilView(m_DepthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
 
-		ShaderManager::getInstance().bind();
+		ShaderManager::GetInstance().Bind();
 	}
 
-	void GraphicsManager::endDraw()
+	void GraphicsManager::EndDraw()
 	{
 		m_SwapChain->Present(1, 0);
 	}

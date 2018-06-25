@@ -18,9 +18,9 @@ namespace Lan
 		m_GarbageCollector.clear();
 	}
 
-	bool Scene::removeObject(Object& object)
+	bool Scene::RemoveObject(Object& object)
 	{
-		if (isObjectExist(object))
+		if (IsObjectExist(object))
 		{
 			m_GarbageCollector.push_back(&object);
 			return true;
@@ -32,61 +32,61 @@ namespace Lan
 		}
 	}
 
-	bool Scene::isObjectExist(Object& object)
+	bool Scene::IsObjectExist(Object& object)
 	{
 		return m_Objects.count(&object) > 0;
 	}
 
-	int Scene::getObjectCount()
+	tsize Scene::GetObjectCount()
 	{
-		return (int32) m_Objects.size();
+		return m_Objects.size();
 	}
 
-	void Scene::update(Context& context)
+	void Scene::Update(Context& context)
 	{
-		collectGarbage();
+		CollectGarbage();
 
 		for (auto o : m_Objects)
 		{
-			if (o->isActive()) 
+			if (o->IsActive()) 
 			{
-				o->update(context);
+				o->Update(context);
 			}
 		}
-		onUpdate(context);
+		OnUpdate(context);
 	}
 	
-	void Scene::draw() 
+	void Scene::Draw() 
 	{
 		for (auto o : m_Objects) 
 		{
-			if (o->isVisible()) 
+			if (o->IsVisible()) 
 			{
-				o->draw();
+				o->Draw();
 			}
 		}
-		onDraw();		//게임 프로그래머가 draw시 해야 할 동작을 적으면 실행됨
+		OnDraw();		//게임 프로그래머가 Draw시 해야 할 동작을 적으면 실행됨
 	}
 
-	void Scene::pause()
+	void Scene::Pause()
 	{
 		m_IsPaused = true;
-		onPause();
+		OnPause();
 	}
 
-	void Scene::start()
+	void Scene::Start()
 	{
 		m_IsPaused = false;
 		if (!m_HasStarted) m_HasStarted = true;
-		else onRestart();
-		onStart();
+		else OnRestart();
+		OnStart();
 	}
 
-	void Scene::collectGarbage()
+	void Scene::CollectGarbage()
 	{
 		for (auto object : m_GarbageCollector)
 		{
-			if (!isObjectExist(*object))
+			if (!IsObjectExist(*object))
 			{
 				LOG(LogLevel::Error, "오브젝트 제거 오류");
 				break;

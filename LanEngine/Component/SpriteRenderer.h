@@ -8,18 +8,18 @@ namespace Lan
 	class SpriteRenderer : public Component
 	{
 	public:
-		SpriteRenderer();
-		SpriteRenderer(tstring textureName);
+		SpriteRenderer(Object* parent);
+		SpriteRenderer(Object* parent, tstring textureName);
 		~SpriteRenderer();
 
-		void setTexture(tstring name);
-		Texture* getTexture() const;
+		void SetTexture(tstring name);
+		Texture* GetTexture() const;
 
 	protected:
-		virtual void onDraw() override;
+		virtual void OnDraw() override;
 
 	private:
-		void createTexCoordBuffer();
+		void CreateTexCoordBuffer();
 
 		Texture * m_Sprite;
 		ID3D11Buffer* m_TexCoordBuffer;

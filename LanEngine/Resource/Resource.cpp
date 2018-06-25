@@ -15,12 +15,12 @@ namespace Lan
 		
 	}
 
-	const tstring& Resource::getExtension() const
+	const tstring& Resource::GetExtension() const
 	{
 		return m_Extension;
 	}
 
-	const tstring& Resource::getPath() const
+	const tstring& Resource::GetPath() const
 	{
 		return m_Path;
 	}

@@ -9,20 +9,18 @@ namespace Lan
 	class Component
 	{
 	public:
-		Component();
+		Component(Object* parent);
 		virtual ~Component();
 
-		Object& getParent() const;
+		Object& GetParent() const;
 
 	protected:
-		virtual void onUpdate(Context& context) {};
-		virtual void onDraw() {};
+		virtual void OnUpdate(Context& context) {};
+		virtual void OnDraw() {};
 
 	private:
-		void update(Context& context);
-		void draw();
-
-		void setParent(Object* obj);
+		void Update(Context& context);
+		void Draw();
 
 		Object* m_Parent;
 

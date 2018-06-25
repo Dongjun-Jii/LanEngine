@@ -10,16 +10,16 @@ namespace Lan
 		BaseGame() = default;
 		virtual ~BaseGame() = default;
 
-		void initialize();
-		void update(Context& context);
-		void draw();
-		void destroy();
+		void Initialize();
+		void Update(Context& context);
+		void Draw();
+		void Destroy();
 
 	protected:
-		virtual void onInitialize() = 0;
-		virtual void onUpdate(Context& context) = 0;
-		virtual void onDraw() = 0;
-		virtual void onDestroy() = 0;
+		virtual void OnInitialize() = 0;
+		virtual void OnUpdate(Context& context) = 0;
+		virtual void OnDraw() = 0;
+		virtual void OnDestroy() = 0;
 
 	private:
 		BaseGame & operator=(const BaseGame&) = delete;

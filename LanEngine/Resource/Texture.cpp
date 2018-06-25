@@ -2,9 +2,6 @@
 #include "Texture.h"
 #include "../Utils/Utils.h"
 #include "../Graphics/GraphicsManager.h"
-#define STB_IMAGE_IMPLEMENTATION
-#include "../STB/stb_image.h"
-
 #include <DirectXTex.h>
 
 
@@ -15,7 +12,7 @@ namespace Lan
 		m_Buffer(nullptr),
 		m_View(nullptr)
 	{
-		ID3D11Device* device = GraphicsManager::getInstance().getDevice();
+		ID3D11Device* device = GraphicsManager::GetInstance().GetDevice();
 
 		DirectX::TexMetadata info;
 		auto image = std::make_unique<DirectX::ScratchImage>();
@@ -44,27 +41,27 @@ namespace Lan
 		}
 	}
 
-	int32 Texture::getWidth() const
+	int32 Texture::GetWidth() const
 	{
 		return m_Width;
 	}
 
-	int32 Texture::getHeight() const
+	int32 Texture::GetHeight() const
 	{
 		return m_Height;
 	}
 
-	int32 Texture::getChannel() const
+	int32 Texture::GetChannel() const
 	{
 		return m_Channel;
 	}
 
-	ID3D11Texture2D * Texture::getTextureBuffer() const
+	ID3D11Texture2D * Texture::GetTextureBuffer() const
 	{
 		return m_Buffer;
 	}
 
-	ID3D11ShaderResourceView* Texture::getTextureView() const
+	ID3D11ShaderResourceView* Texture::GetTextureView() const
 	{
 		return m_View;
 	}

@@ -15,26 +15,26 @@ namespace Lan
 
 		/* 리소스의 타입 추가
 		 * extension : 확장자, factory : 해당 리소스를 생성하는 팩토리
-		 * ResourceFactory<ResourceType>::getInstance()로 넣으면 됨
+		 * ResourceFactory<ResourceType>::GetInstance()로 넣으면 됨
 		 */
-		void addResourceType(tstring extension, Factory& factory);
+		void AddResourceType(tstring extension, Factory& factory);
 
-		bool loadResource(tstring name);
+		bool LoadResource(tstring name);
 		//bool loadSet(tstring name);
 
-		void unloadResource(tstring name);
+		void UnloadResource(tstring name);
 		//void unloadSet(tstring name);
 
 		//void moveSet(tstring unloadingSet, tstring loadingSet);
 
-		Resource* getResource(tstring name);
+		Resource* GetResource(tstring name);
 
 	private:
 		ResourceManager();
 		~ResourceManager();
 
-		void parseRes(tstring dataString);
-		void insertPath(tstring& rawName, tstring& rawPath, std::map<tstring, tstring> & val);
+		void ParseRes(tstring dataString);
+		void InsertPath(tstring& rawName, tstring& rawPath, std::map<tstring, tstring> & val);
 	
 		std::map<tstring, Resource *> m_Resources;
 		std::map<tstring, Factory *> m_Factories;

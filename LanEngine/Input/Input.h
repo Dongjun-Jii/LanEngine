@@ -18,24 +18,24 @@ namespace Lan
 	public:
 		friend Singleton<Input>;
 
-		void update();
+		void Update();
 
 		//눌려있다면 true, 그외엔 false
-		bool isKeyDown(Key key) const;
+		bool IsKeyDown(Key key) const;
 		//해당 키를 누른 첫 프레임에만 true, 그외엔 false
-		bool isKeyPressed(Key key) const;
+		bool IsKeyPressed(Key key) const;
 		//해당 키를 뗀 첫 프레임에만 true, 그외엔 false
-		bool isKeyReleased(Key key) const;
+		bool IsKeyReleased(Key key) const;
 
 		//눌려있다면 true, 그외엔 false
-		bool isButtonDown(MouseButton button) const;
+		bool IsButtonDown(MouseButton button) const;
 		//해당 버튼을 누른 첫 프레임에만 true, 그외엔 false
-		bool isButtonPressed(MouseButton button) const;
+		bool IsButtonPressed(MouseButton button) const;
 		//해당 버튼을 뗀 첫 프레임에만 true, 그외엔 false
-		bool isButtonReleased(MouseButton button) const;
+		bool IsButtonReleased(MouseButton button) const;
 
 		//마우스 커서 위치
-		ivec2 getCursorPos() const;
+		ivec2 GetCursorPos() const;
 	private:
 		static const int KEY_COUNT = 256;
 		static const int KEY_ID_MIN = 0x07;
@@ -45,10 +45,10 @@ namespace Lan
 		Input();
 		~Input();
 
-		void updateKeyState();
-		void updateMouseState();
+		void UpdateKeyState();
+		void UpdateMouseState();
 
-		void setMouseState(MouseButton button, bool isDown);
+		void SetMouseState(MouseButton button, bool isDown);
 
 		BYTE* m_CurKeyState;
 		BYTE* m_PreKeyState;

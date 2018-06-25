@@ -6,22 +6,24 @@
 
 namespace Lan
 {
-	SpriteRenderer::SpriteRenderer() :
+	SpriteRenderer::SpriteRenderer(Object* parent) :
+		Component(parent),
 		m_Sprite(nullptr),
 		m_TexCoordBuffer(nullptr)
 	{
-		createTexCoordBuffer();
+		CreateTexCoordBuffer();
 	}
 
-	SpriteRenderer::SpriteRenderer(tstring textureName) :
-		m_Sprite(dynamic_cast<Texture *>(ResourceManager::getInstance().getResource(textureName)))
+	SpriteRenderer::SpriteRenderer(Object* parent, tstring textureName) :
+		Component(parent),
+		m_Sprite(dynamic_cast<Texture *>(ResourceManager::GetInstance().GetResource(textureName)))
 	{
-		createTexCoordBuffer();
+		CreateTexCoordBuffer();
 	}
 
-	void SpriteRenderer::createTexCoordBuffer()
+	void SpriteRenderer::CreateTexCoordBuffer()
 	{
-		ID3D11Device* device = GraphicsManager::getInstance().getDevice();
+		ID3D11Device* device = GraphicsManager::GetInstance().GetDevice();
 		HRESULT result;
 
 		fvec2 vertices[4] =
@@ -61,28 +63,28 @@ namespace Lan
 		}
 	}
 
-	void SpriteRenderer::onDraw()
+	void SpriteRenderer::OnDraw()
 	{
-		ID3D11DeviceContext* deviceContext = GraphicsManager::getInstance().getDeviceContext();
+		ID3D11DeviceContext* deviceContext = GraphicsManager::GetInstance().GetDeviceContext();
 
 		UINT stride = sizeof(fvec2);
 		UINT offset = 0;
 
 		if (m_Sprite)
 		{
-			ID3D11ShaderResourceView* tex = m_Sprite->getTextureView();
+			ID3D11ShaderResourceView* tex = m_Sprite->GetTextureView();
 			deviceContext->PSSetShaderResources(0, 1, &tex);
 		}
 
 		deviceContext->IASetVertexBuffers(1, 1, &m_TexCoordBuffer, &stride, &offset);
 	}
 
-	void SpriteRenderer::setTexture(tstring name)
+	void SpriteRenderer::SetTexture(tstring name)
 	{
-		ResourceManager::getInstance().getResource(name);
+		ResourceManager::GetInstance().GetResource(name);
 	}
 
-	Texture* SpriteRenderer::getTexture() const
+	Texture* SpriteRenderer::GetTexture() const
 	{
 		return m_Sprite;
 	}

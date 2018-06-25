@@ -18,56 +18,47 @@ namespace Lan
 		Object();
 		virtual ~Object();
 
-		bool isActive() const;
-		bool isVisible() const;
+		bool IsActive() const;
+		bool IsVisible() const;
 
-		Scene& getScene() const;
+		Scene& GetScene() const;
 
-		Transform& getTransform();
+		Transform& GetTransform();
 
-		void setActive(bool active);
-		void setVisible(bool visible);
-
-	protected:
-		virtual void onUpdate(Context& context) = 0;
-		virtual void onDraw() {};
+		void SetActive(bool active);
+		void SetVisible(bool visible);
 
 		template<typename T, typename... Args>
-		void addComponent(Args&&... args);
+		T* AddComponent(Args&&... args);
 		template<typename T>
-		void removeComponent();
+		void RemoveComponent();
 		template <typename T>
-		T* getComponent();
+		T* GetComponent();
 		template <typename T>
-		bool isComponentExist();
+		bool IsComponentExist();
 
-		void addChild(Object& object);
-		void removeChild(Object& object);
-		const std::set<Object*>& getChildren() const;
-		bool isChildExist(Object& object);
-		tsize getChildCount() const;
+		void AddChild(Object& object);
+		void RemoveChild(Object& object);
+		const std::set<Object*>& GetChildren() const;
+		bool IsChildExist(Object& object);
+		tsize GetChildCount() const;
+
+		void SetParent(Object* object);
+		Object* GetParent() const;
+
+	protected:
+		virtual void OnUpdate(Context& context) = 0;
+		virtual void OnDraw() {};
+
 
 	private:
-		enum class GarbageType
-		{
-			ComponentType,
-			ObjectType
-		};
 
-		struct Garbage
-		{
-			Garbage(GarbageType type, void* element);
-			GarbageType type;
-			void* element;
-		};
+		void Update(Context& context);
+		void Draw();
 
-		void update(Context& context);
-		void draw();
+		void SetScene(Scene* scene);
 
-		void setScene(Scene* scene);
-		void setParent(Object* object);
-
-		void collectGarbage();
+		void CollectGarbage();
 
 		bool m_IsActive;
 		bool m_IsVisible;
@@ -77,10 +68,10 @@ namespace Lan
 
 		std::map<tstring, Component *> m_Components;
 		std::set<Object*> m_Children;
-		std::vector<Garbage> m_GarbageCollector;
+		std::vector<Component*> m_GarbageCollector;
 
-		friend void Scene::update(Context& context);
-		friend void Scene::draw();
+		friend void Scene::Update(Context& context);
+		friend void Scene::Draw();
 
 		friend class Component;
 	};

@@ -8,21 +8,21 @@ namespace Lan
 {
 	Logger::~Logger()
 	{
-		writeLogFile();
+		WriteLogFile();
 	}
 
-	void Logger::initialize(bool useConsole, bool useFile)
+	void Logger::Initialize(bool useConsole, bool useFile)
 	{
 		m_UseConsole = useConsole;
 		m_UseFile = useFile;
 	}
 
-	void Logger::log(LogLevel level, const tstring& message, const BreakInfo& breakInfo)
+	void Logger::Log(LogLevel level, const tstring& message, const BreakInfo& breakInfo)
 	{
-		log(level, "LanEngine", message, breakInfo);
+		Log(level, "LanEngine", message, breakInfo);
 	}
 
-	void Logger::log(LogLevel level, const tstring& tag, const tstring& message, const BreakInfo& breakInfo)
+	void Logger::Log(LogLevel level, const tstring& tag, const tstring& message, const BreakInfo& breakInfo)
 	{
 		tstringstream logText;
 		switch (level)
@@ -102,7 +102,7 @@ namespace Lan
 		}
 	}
 
-	void Logger::writeLogFile()
+	void Logger::WriteLogFile()
 	{
 		if (!(m_LogBuffer.beg == m_LogBuffer.cur) && m_UseFile)
 		{

@@ -7,8 +7,8 @@ namespace Lan
 	class Factory
 	{
 	public:
-		virtual void * alloc(void * buffer, tsize len, tstring path, tstring extension) = 0;
-		virtual void free(void * resource, size_t n = 1) = 0;
+		virtual void * Alloc(void * buffer, tsize len, tstring path, tstring extension) = 0;
+		virtual void Free(void * resource, size_t n = 1) = 0;
 	};
 
 	template<typename T>
@@ -16,9 +16,8 @@ namespace Lan
 	{
 	public:
 		friend Singleton<ResourceFactory<T>>;
-		virtual void * alloc(void * buffer, tsize len, tstring path, tstring extension) override;
-		//virtual void ** alloc(int8 ** buffer, tsize n) override;
-		virtual void free(void * resource, tsize n) override;
+		virtual void * Alloc(void * buffer, tsize len, tstring path, tstring extension) override;
+		virtual void Free(void * resource, tsize n) override;
 
 	private:
 		ResourceFactory() = default;

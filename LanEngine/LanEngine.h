@@ -21,16 +21,16 @@ namespace Lan
 	public:
 		friend Singleton<LanEngine>;
 
-		void initialize(HINSTANCE instanceHandle, ivec2 windowSize, BaseGame& game);
+		void Initialize(HINSTANCE instanceHandle, ivec2 windowSize, BaseGame& game);
 
-		void run();
+		void Run();
 
 	private:
 		LanEngine();
 		~LanEngine();
 
-		void update();
-		void draw();
+		void Update();
+		void Draw();
 
 		Logger* m_Logger;
 		Window* m_Window;

@@ -11,8 +11,8 @@ namespace Lan
 		Resource(void * buffer, tsize len, tstring path, tstring extension);
 		virtual ~Resource();
 
-		const tstring& getExtension() const;
-		const tstring& getPath() const;
+		const tstring& GetExtension() const;
+		const tstring& GetPath() const;
 
 	private:
 		tstring m_Extension;

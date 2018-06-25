@@ -18,9 +18,9 @@ namespace Lan
 	struct BreakInfo
 	{
 		tstring file;
-		int line;
+		int32 line;
 
-		BreakInfo(const tstring file, int line): file(file), line(line) {}
+		BreakInfo(const tstring file, int32 line): file(file), line(line) {}
 	};
 
 	class LanEngine;
@@ -31,12 +31,12 @@ namespace Lan
 		friend Singleton<Logger>;
 		friend LanEngine;
 
-		void initialize(bool useConsole, bool useFile = false);
+		void Initialize(bool useConsole, bool useFile = false);
 
-		void log(LogLevel level, const tstring& tag, const tstring& message, const BreakInfo& breakInfo);
-		void log(LogLevel level, const tstring& message, const BreakInfo& breakInfo);
+		void Log(LogLevel level, const tstring& tag, const tstring& message, const BreakInfo& breakInfo);
+		void Log(LogLevel level, const tstring& message, const BreakInfo& breakInfo);
 
-		void writeLogFile();
+		void WriteLogFile();
 
 	private:
 		Logger() {};
@@ -49,10 +49,10 @@ namespace Lan
 }
 
 #define LOG_WITH_TAG(level, tag, message) \
-	Lan::Logger::getInstance().log(level, tag, message, Lan::BreakInfo(__FILE__, __LINE__));
+	Lan::Logger::GetInstance().Log(level, tag, message, Lan::BreakInfo(__FILE__, __LINE__));
 
 #define LOG(level, message) \
-	Lan::Logger::getInstance().log(level, message, Lan::BreakInfo(__FILE__, __LINE__));
+	Lan::Logger::GetInstance().Log(level, message, Lan::BreakInfo(__FILE__, __LINE__));
 
 
 

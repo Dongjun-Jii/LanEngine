@@ -9,90 +9,90 @@ namespace Lan
 		
 	}
 
-	void LanEngine::initialize(HINSTANCE instanceHandle, ivec2 windowSize, BaseGame& game)
+	void LanEngine::Initialize(HINSTANCE instanceHandle, ivec2 windowSize, BaseGame& game)
 	{
-		Logger::createInstance();
-		Logger::getInstance().initialize(true);
+		Logger::CreateInstance();
+		Logger::GetInstance().Initialize(true);
 
-		Window::createInstance();
-		Input::createInstance();
-		SceneManager::createInstance();
-		GraphicsManager::createInstance();
-		ResourceManager::createInstance();
+		Window::CreateInstance();
+		Input::CreateInstance();
+		SceneManager::CreateInstance();
+		GraphicsManager::CreateInstance();
+		ResourceManager::CreateInstance();
 		
-		Window::getInstance().initialize(instanceHandle, windowSize);
+		Window::GetInstance().Initialize(instanceHandle, windowSize);
 
-		GraphicsManager::getInstance().initialize(Window::getInstance().getHandle(), windowSize, false);
+		GraphicsManager::GetInstance().Initialize(Window::GetInstance().GetHandle(), windowSize, false);
 
-		ShaderManager::createInstance();
+		ShaderManager::CreateInstance();
 
-		m_Logger = &Logger::getInstance();
-		m_Window = &Window::getInstance();
-		m_Input = &Input::getInstance();
-		m_SceneManager = &SceneManager::getInstance();
-		m_Graphics = &GraphicsManager::getInstance();
-		m_Resource = &ResourceManager::getInstance();
+		m_Logger = &Logger::GetInstance();
+		m_Window = &Window::GetInstance();
+		m_Input = &Input::GetInstance();
+		m_SceneManager = &SceneManager::GetInstance();
+		m_Graphics = &GraphicsManager::GetInstance();
+		m_Resource = &ResourceManager::GetInstance();
 		m_Game = &game;
 
-		ResourceFactory<Texture>::createInstance();
-		m_Resource->addResourceType("png", ResourceFactory<Texture>::getInstance());
+		ResourceFactory<Texture>::CreateInstance();
+		m_Resource->AddResourceType("png", ResourceFactory<Texture>::GetInstance());
 
-		m_Game->initialize();
+		m_Game->Initialize();
 	}
 
 	LanEngine::~LanEngine()
 	{
-		m_Game->destroy();
-		ResourceManager::destroyInstance();
-		ShaderManager::destroyInstance();
-		GraphicsManager::destroyInstance();
-		SceneManager::destroyInstance();
-		Input::destroyInstance();
-		Window::destroyInstance();
-		Logger::destroyInstance();
+		m_Game->Destroy();
+		ResourceManager::DestroyInstance();
+		ShaderManager::DestroyInstance();
+		GraphicsManager::DestroyInstance();
+		SceneManager::DestroyInstance();
+		Input::DestroyInstance();
+		Window::DestroyInstance();
+		Logger::DestroyInstance();
 	}
 
-	void LanEngine::run()
+	void LanEngine::Run()
 	{
 		bool isRunning = true;
 		
 		while (isRunning)
 		{
-			update();
+			Update();
 
-			draw();
+			Draw();
 
 
-			if (m_Window->shouldClose())
+			if (m_Window->ShouldClose())
 			{
 				isRunning = false;
 			}
 		}
 	}
 
-	void LanEngine::update()
+	void LanEngine::Update()
 	{
 		Context context;
 		context.deltaTime = 1 / 60.0f;
 
 
-		m_Input->update();
-		m_Window->peekMessage();
+		m_Input->Update();
+		m_Window->Update();
 
-		m_Game->update(context);
+		m_Game->Update(context);
 
-		Scene& scene = m_SceneManager->getCurrentScene();
-		scene.update(context);
+		Scene& scene = m_SceneManager->GetCurrentScene();
+		scene.Update(context);
 
 	}
 
-	void LanEngine::draw()
+	void LanEngine::Draw()
 	{
-		m_Graphics->beginDraw();
+		m_Graphics->BeginDraw();
 
-		Scene& scene = m_SceneManager->getCurrentScene();
-		scene.draw();
+		Scene& scene = m_SceneManager->GetCurrentScene();
+		scene.Draw();
 
-		m_Graphics->endDraw();
+		m_Graphics->EndDraw();
 	}
 }

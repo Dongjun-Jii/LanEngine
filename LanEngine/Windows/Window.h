@@ -12,20 +12,15 @@ namespace Lan
 		friend Singleton<Window>;
 		friend LanEngine;
 
-		const HWND& getHandle() const;
+		const HWND& GetHandle() const;
 
-		void peekMessage();
+		void Update();
 
-		bool shouldClose() const;
+		bool ShouldClose() const;
 
-		bool isActive() const;
+		bool IsActive() const;
 
-//		bool isFullScreen() const;
-//		bool canGoFullScreen() const;
-//		void setFullScreen(HWND hWnd, bool fullscreen);
-//		void toggleFullScreen(HWND hWnd);
-
-		bool setWindowName(tstring windowName) const;	//윈도우 이름 바꾸기
+		bool SetWindowName(tstring windowName) const;
 
 		static LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
@@ -33,10 +28,10 @@ namespace Lan
 		Window();
 		~Window();
 
-		void initialize(HINSTANCE instanceHandle, ivec2 size);
+		void Initialize(HINSTANCE instanceHandle, ivec2 size);
 
 
-		void setActive(bool active);
+		void SetActive(bool active);
 
 		HWND m_WindowHandle;
 
@@ -46,7 +41,5 @@ namespace Lan
 		bool m_ShouldClose;
 		bool m_IsActive;
 		bool m_HasConsole;
-//		bool m_IsFullScreen;
-//		bool m_CanGoFullScreen;
 	};
 }

@@ -13,28 +13,28 @@ namespace Lan
 		Scene();
 		virtual ~Scene();
 
-	protected:
-		virtual void onStart() {};
-		virtual void onUpdate(Context& context) = 0;
-		virtual void onDraw() {};
-		virtual void onPause() {};
-
-		virtual void onRestart() {};
-
 		template<typename T, typename... Args>
-		Object& addObject(Args&&... args);
-		bool removeObject(Object& object);
-		bool isObjectExist(Object& object);
+		Object& AddObject(Args&&... args);
+		bool RemoveObject(Object& object);
+		bool IsObjectExist(Object& object);
 
-		int getObjectCount();
+		tsize GetObjectCount();
 
-		void collectGarbage();
+	protected:
+		virtual void OnStart() {};
+		virtual void OnUpdate(Context& context) = 0;
+		virtual void OnDraw() {};
+		virtual void OnPause() {};
+
+		virtual void OnRestart() {};
+
+		void CollectGarbage();
 
 	private:
-		void update(Context& context);
-		void draw();
-		void pause();
-		void start();
+		void Update(Context& context);
+		void Draw();
+		void Pause();
+		void Start();
 
 		std::set<Object*> m_Objects;
 		std::vector<Object*> m_GarbageCollector;

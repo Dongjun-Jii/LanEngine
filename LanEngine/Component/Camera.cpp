@@ -5,28 +5,29 @@
 
 namespace Lan
 {
-	Camera::Camera() : 
-		Camera(fvec2(2, 2))
+	Camera::Camera(Object* parent) :
+		Camera(parent, fvec2(2, 2))
 	{
 
 	}
 
-	Camera::Camera(float width, float height) :
-		Camera(fvec2(width, height))
+	Camera::Camera(Object* parent, float width, float height) :
+		Camera(parent, fvec2(width, height))
 	{
 
 	}
 
-	Camera::Camera(fvec2& size) :
-		Camera(std::move(size))
+	Camera::Camera(Object* parent, fvec2& size) :
+		Camera(parent, std::move(size))
 	{
 
 	}
 
-	Camera::Camera(fvec2&& size) :
+	Camera::Camera(Object* parent, fvec2&& size) :
+		Component(parent),
 		m_Size(size)
 	{
-		createViewBuffer();
+		CreateViewBuffer();
 	}
 
 	Camera::~Camera()
@@ -34,33 +35,33 @@ namespace Lan
 
 	}
 
-	void Camera::setViewSize(fvec2& size)
+	void Camera::SetViewSize(fvec2& size)
 	{
 		m_Size = size;
 	}
 
-	void Camera::setViewSize(fvec2&& size)
+	void Camera::SetViewSize(fvec2&& size)
 	{
 		m_Size = size;
 	}
 
-	const fvec2& Camera::getViewSize() const
+	const fvec2& Camera::GetViewSize() const
 	{
 		return m_Size;
 	}
 
-	void Camera::onDraw()
+	void Camera::OnDraw()
 	{
-		ID3D11DeviceContext * deviceContext = GraphicsManager::getInstance().getDeviceContext();
+		ID3D11DeviceContext * deviceContext = GraphicsManager::GetInstance().GetDeviceContext();
 
-		updateViewBuffer();
+		UpdateViewBuffer();
 
 		deviceContext->VSSetConstantBuffers(1, 1, &m_ViewMatrixBuffer);
 	}
 
-	void Camera::createViewBuffer()
+	void Camera::CreateViewBuffer()
 	{
-		ID3D11Device* device = GraphicsManager::getInstance().getDevice();
+		ID3D11Device* device = GraphicsManager::GetInstance().GetDevice();
 		HRESULT result;
 
 		D3D11_BUFFER_DESC vbd;
@@ -78,19 +79,17 @@ namespace Lan
 		}
 	}
 
-	void Camera::updateViewBuffer()
+	void Camera::UpdateViewBuffer()
 	{
-		ID3D11DeviceContext * deviceContext = GraphicsManager::getInstance().getDeviceContext();
+		ID3D11DeviceContext * deviceContext = GraphicsManager::GetInstance().GetDeviceContext();
 
-		fvec4 pos = { getParent().getTransform().position.x,
-			getParent().getTransform().position.y,
-			0, 1 };
+		fvec3 pos = GetParent().GetTransform().GetTranslate();
 		fvec4 eye = { 0, 0, 1, 0 };
-		fvec4 up = { DirectX::XMScalarSin(getParent().getTransform().angle),
-			DirectX::XMScalarCos(getParent().getTransform().angle), 0, 0 };
+		fvec4 up = { DirectX::XMScalarSin(GetParent().GetTransform().GetRotate()),
+			DirectX::XMScalarCos(GetParent().GetTransform().GetRotate()), 0, 0 };
 
 		matrix vMat = DirectX::XMMatrixLookToLH(
-			DirectX::XMLoadFloat4(&pos),
+			DirectX::XMLoadFloat3(&pos),
 			DirectX::XMLoadFloat4(&eye),
 			DirectX::XMLoadFloat4(&up));
 

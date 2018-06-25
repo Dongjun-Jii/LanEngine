@@ -30,7 +30,7 @@ namespace Lan
 
 		tstring str(buffer);
 
-		parseRes(str);
+		ParseRes(str);
 
 		delete[] buffer;
 	}
@@ -40,7 +40,7 @@ namespace Lan
 
 	}
 
-	void ResourceManager::parseRes(tstring dataString)
+	void ResourceManager::ParseRes(tstring dataString)
 	{
 		tstringstream stream(dataString);
 		std::map<tstring, tstring> val;
@@ -83,13 +83,13 @@ namespace Lan
 			{
 				tstring name = line.substr(0, colPos);
 				tstring path = line.substr(colPos + 1, tstring::npos);
-				insertPath(name, path, val);
+				InsertPath(name, path, val);
 			}
 
 		}
 	}
 
-	void ResourceManager::insertPath(tstring& rawName, tstring& rawPath, std::map<tstring, tstring>& val)
+	void ResourceManager::InsertPath(tstring& rawName, tstring& rawPath, std::map<tstring, tstring>& val)
 	{
 		tstring name = trim(rawName);
 		tstring path = trim(rawPath);
@@ -108,7 +108,7 @@ namespace Lan
 		{
 			while (tstring::npos != path.find_first_of('<'))
 			{
-				tsize start = path.find_first_of('<');
+				tsize Start = path.find_first_of('<');
 				tsize end = path.find_first_of('>');
 				if (end == tstring::npos)
 				{
@@ -116,7 +116,7 @@ namespace Lan
 					break;
 				}
 
-				path.replace(start, end - start + 1, val[path.substr(start + 1, end - start - 1)]);
+				path.replace(Start, end - Start + 1, val[path.substr(Start + 1, end - Start - 1)]);
 			}
 
 			m_Paths[name] = path;
@@ -147,14 +147,14 @@ namespace Lan
 			{
 				tstring tname = name;
 				tstring tpath = path;
-				insertPath(tname.replace(nameStart, nameEnd - nameStart + 1, std::to_string(i)),
+				InsertPath(tname.replace(nameStart, nameEnd - nameStart + 1, std::to_string(i)),
 					tpath.replace(pathStart, pathEnd - pathStart + 1, std::to_string(i)),
 					val);
 			}
 		}
 	}
 
-	bool ResourceManager::loadResource(tstring name)
+	bool ResourceManager::LoadResource(tstring name)
 	{
 		if (m_Paths.count(name) < 1)
 		{
@@ -190,7 +190,7 @@ namespace Lan
 		stream.close();
 
 		Resource * resource = 
-			reinterpret_cast<Resource *>(m_Factories[extension]->alloc(buffer, len, path, extension));
+			reinterpret_cast<Resource *>(m_Factories[extension]->Alloc(buffer, len, path, extension));
 
 		m_Resources[name] = resource;
 
@@ -199,16 +199,16 @@ namespace Lan
 		return true;
 	}
 
-	void ResourceManager::unloadResource(tstring name)
+	void ResourceManager::UnloadResource(tstring name)
 	{
 		Resource * resource = m_Resources[name];
 
-		m_Factories[resource->m_Extension]->free(resource);
+		m_Factories[resource->m_Extension]->Free(resource);
 
 		m_Resources.erase(name);
 	}
 
-	void ResourceManager::addResourceType(tstring extension, Factory& factory)
+	void ResourceManager::AddResourceType(tstring extension, Factory& factory)
 	{
 		if (m_Factories.count(extension) > 0)
 		{
@@ -219,7 +219,7 @@ namespace Lan
 		m_Factories[extension] = &factory;
 	}
 
-	Resource* ResourceManager::getResource(tstring name)
+	Resource* ResourceManager::GetResource(tstring name)
 	{
 		if (m_Resources.count(name) < 1)
 		{

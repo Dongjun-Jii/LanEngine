@@ -12,14 +12,14 @@ namespace Lan
 		friend Singleton<SceneManager>;
 		
 		template<typename T, typename... Args>
-		bool addScene(tstring name, Args&&... args);
-		bool removeScene(tstring name);
+		bool AddScene(tstring name, Args&&... args);
+		bool RemoveScene(tstring name);
 
-		Scene& getScene(tstring name);
-		bool isSceneExist(tstring name);
+		Scene* GetScene(tstring name);
+		bool IsSceneExist(tstring name);
 
-		bool setCurrentScene(tstring name);
-		Scene& getCurrentScene();
+		bool SetCurrentScene(tstring name);
+		Scene& GetCurrentScene();
 
 	private:
 		SceneManager();

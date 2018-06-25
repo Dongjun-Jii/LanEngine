@@ -4,8 +4,8 @@
 
 namespace Lan
 {
-	Component::Component() :
-		m_Parent(nullptr)
+	Component::Component(Object* parent) :
+		m_Parent(parent)
 	{
 
 	}
@@ -15,23 +15,18 @@ namespace Lan
 
 	}
 
-	Object& Component::getParent() const
+	Object& Component::GetParent() const
 	{
 		return *(m_Parent);
 	}
 
-	void Component::update(Context& context)
+	void Component::Update(Context& context)
 	{
-		onUpdate(context);
+		OnUpdate(context);
 	}
 
-	void Component::draw()
+	void Component::Draw()
 	{
-		onDraw();
-	}
-
-	void Component::setParent(Object* obj)
-	{
-		m_Parent = obj;
+		OnDraw();
 	}
 }

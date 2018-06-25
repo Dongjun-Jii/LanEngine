@@ -11,29 +11,42 @@ using namespace Lan;
 class TestObject : public Object
 {
 public:
-	TestObject(int z, fvec2 pos)
+	TestObject(fvec3 pos)
 	{
-		addComponent<Square>(fvec2(100, 100));
-		addComponent<SpriteRenderer>("test");
-		getTransform().position = pos;
+		AddComponent<Square>(fvec2(500, 500));
+		AddComponent<SpriteRenderer>("test");
+		GetTransform().SetTranslation(pos);
 	}
 protected:
-	virtual void onUpdate(Context& context)
+	virtual void OnUpdate(Context& context)
 	{
-		if (Input::getInstance().isKeyDown('A'))
+		if (Input::GetInstance().IsKeyDown('A'))
 		{
-			getTransform().angle += 1.0f;
+			GetTransform().Rotate(0.1);
 		}
 
-		if (Input::getInstance().isKeyPressed('B'))
+		if (Input::GetInstance().IsKeyDown('B'))
 		{
-			getTransform().position.x += 0.25f;
+			GetTransform().Translate({ 1, 0, 0 });
 		}
+	}
+};
 
-		if (Input::getInstance().isKeyPressed('C'))
-		{
-			getTransform().size.x += 0.25f;
-		}
+class TestObject2 : public Object
+{
+public:
+	TestObject2(fvec3 pos, Object& obj)
+	{
+		AddComponent<Square>(fvec2(100, 100));
+		AddComponent<SpriteRenderer>("test");
+		GetTransform().SetTranslation(pos);
+		SetParent(&obj);
+		GetTransform().SetTranslation({ 100, 100, -1 }, Space::Local);
+	}
+protected:
+	virtual void OnUpdate(Context& context)
+	{
+		
 	}
 };
 
@@ -42,28 +55,12 @@ class TestCamera : public Object
 public:
 	TestCamera()
 	{
-		addComponent<Camera>(fvec2(800, 600));
+		AddComponent<Camera>(fvec2(800, 600));
 	}
 protected:
-	virtual void onUpdate(Context& context)
+	virtual void OnUpdate(Context& context)
 	{
-		if (Input::getInstance().isKeyDown(VK_UP))
-		{
-			getTransform().position.y += 0.3f;
-		}
-		if (Input::getInstance().isKeyDown(VK_DOWN))
-		{
-			getTransform().position.y -= 0.3f;
-		}
-		if (Input::getInstance().isKeyDown(VK_LEFT))
-		{
-			getTransform().position.x -= 0.3f;
-		}
-		if (Input::getInstance().isKeyDown(VK_RIGHT))
-		{
-			getTransform().position.x += 0.3f;
-		}
-		
+
 	}
 };
 
@@ -72,22 +69,22 @@ class TestGame : public BaseGame
 public:
 
 protected:
-	virtual void onInitialize()
+	virtual void OnInitialize()
 	{
-		ResourceManager::getInstance().loadResource("test");
+		ResourceManager::GetInstance().LoadResource("test");
 	}
 
-	virtual void onUpdate(Context& context)
-	{
-
-	}
-
-	virtual void onDraw()
+	virtual void OnUpdate(Context& context)
 	{
 
 	}
 
-	virtual void onDestroy()
+	virtual void OnDraw()
+	{
+
+	}
+
+	virtual void OnDestroy()
 	{
 
 	}
@@ -98,14 +95,14 @@ class TestScene : public Scene
 public:
 	TestScene()
 	{
-		addObject<TestObject>(1, fvec2(0, 0));
-		addObject<TestObject>(0, fvec2(0.5f, 0.5f));
-		addObject<TestCamera>();
+		Object& obj = AddObject<TestObject>(fvec3(0, 0, +1));
+		AddObject<TestObject2>(fvec3(0.5f, 0.5f, 0), obj);
+		AddObject<TestCamera>();
 	}
 protected:
-	virtual void onUpdate(Context& context)
+	virtual void OnUpdate(Context& context)
 	{
-		if (Input::getInstance().isButtonDown(MouseButton::Left))
+		if (Input::GetInstance().IsButtonDown(MouseButton::Left))
 		{
 			LOG(LogLevel::Debug, "마우스 클릭함");
 		}
@@ -117,16 +114,16 @@ protected:
 int CALLBACK WinMain(HINSTANCE instanceHandle, HINSTANCE prevHandle, LPSTR cmdString, int show)
 {
 	TestGame game;
-	Lan::LanEngine::createInstance();
-	Lan::LanEngine& lan = Lan::LanEngine::getInstance();
+	Lan::LanEngine::CreateInstance();
+	Lan::LanEngine& lan = Lan::LanEngine::GetInstance();
 
-	lan.initialize(instanceHandle, { 800 , 600 }, game);
+	lan.Initialize(instanceHandle, { 800 , 600 }, game);
 
-	SceneManager::getInstance().addScene<TestScene>("Test");
+	SceneManager::GetInstance().AddScene<TestScene>("Test");
 
-	SceneManager::getInstance().setCurrentScene("Test");
+	SceneManager::GetInstance().SetCurrentScene("Test");
 
-	lan.run();
+	lan.Run();
 
 	return 0;
 }

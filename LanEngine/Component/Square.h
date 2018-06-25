@@ -6,18 +6,18 @@ namespace Lan
 	class Square : public Component
 	{
 	public:
-		Square(DirectX::XMFLOAT2 & size);
-		Square(DirectX::XMFLOAT2 && size);
+		Square(Object* parent, DirectX::XMFLOAT2 & size);
+		Square(Object* parent, DirectX::XMFLOAT2 && size);
 		virtual ~Square();
 
-		void setSize(DirectX::XMFLOAT2 & size);
-		void setSize(DirectX::XMFLOAT2 && size);
+		void SetSize(DirectX::XMFLOAT2 & size);
+		void SetSize(DirectX::XMFLOAT2 && size);
 
 	protected:
-		virtual void onDraw() override;
+		virtual void OnDraw() override;
 
 	private:
-		void resizeVertexBuffer();
+		void ResizeVertexBuffer();
 
 		DirectX::XMFLOAT2 m_Size;
 		ID3D11Buffer * m_VertexBuffer;

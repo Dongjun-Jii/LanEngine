@@ -24,13 +24,13 @@ namespace Lan
 		}
 	}
 
-	void Input::update()
+	void Input::Update()
 	{
-		updateKeyState();
-		updateMouseState();
+		UpdateKeyState();
+		UpdateMouseState();
 	}
 
-	void Input::updateKeyState()
+	void Input::UpdateKeyState()
 	{
 		//현재 상태를 이전 프레임의 상태로 변환
 		BYTE* temp = m_PreKeyState;
@@ -44,14 +44,14 @@ namespace Lan
 		}
 	}
 
-	void Input::updateMouseState()
+	void Input::UpdateMouseState()
 	{
 		//현재 상태를 이전 프레임의 상태로 변환
 		m_PreKeyState[0] = m_CurMouseState[0];
 		m_PreKeyState[1] = m_CurMouseState[1];
 	}
 
-	void Input::setMouseState(MouseButton button, bool isDown)
+	void Input::SetMouseState(MouseButton button, bool isDown)
 	{
 		switch (button)
 		{
@@ -65,7 +65,7 @@ namespace Lan
 	}
 
 
-	bool Input::isKeyDown(Key key) const
+	bool Input::IsKeyDown(Key key) const
 	{
 		if (key <= KEY_ID_MIN || KEY_ID_MAX < key)
 		{
@@ -76,7 +76,7 @@ namespace Lan
 		return m_CurKeyState[key] & 0xf0;
 	}
 
-	bool Input::isKeyPressed(Key key) const
+	bool Input::IsKeyPressed(Key key) const
 	{
 		if (key <= KEY_ID_MIN || KEY_ID_MAX < key)
 		{
@@ -94,7 +94,7 @@ namespace Lan
 		}
 	}
 
-	bool Input::isKeyReleased(Key key) const
+	bool Input::IsKeyReleased(Key key) const
 	{
 		if (key <= KEY_ID_MIN || KEY_ID_MAX < key)
 		{
@@ -112,7 +112,7 @@ namespace Lan
 		}
 	}
 
-	bool Input::isButtonDown(MouseButton button) const
+	bool Input::IsButtonDown(MouseButton button) const
 	{
 		switch (button)
 		{
@@ -124,7 +124,7 @@ namespace Lan
 		return false;
 	}
 
-	bool Input::isButtonPressed(MouseButton button) const
+	bool Input::IsButtonPressed(MouseButton button) const
 	{
 		switch (button)
 		{
@@ -136,7 +136,7 @@ namespace Lan
 		return false;
 	}
 
-	bool Input::isButtonReleased(MouseButton button) const
+	bool Input::IsButtonReleased(MouseButton button) const
 	{
 		switch (button)
 		{
@@ -148,15 +148,15 @@ namespace Lan
 		return false;
 	}
 
-	ivec2 Input::getCursorPos() const
+	ivec2 Input::GetCursorPos() const
 	{
 		POINT cursorPos;
-		if (!GetCursorPos(&cursorPos))
+		if (!::GetCursorPos(&cursorPos))
 		{
 			LOG(LogLevel::Error, "커서 위치 참고 오류");
 		}
 
-		ScreenToClient(Window::getInstance().getHandle(), &cursorPos);
+		ScreenToClient(Window::GetInstance().GetHandle(), &cursorPos);
 
 		return { cursorPos.x, cursorPos.y };
 	}

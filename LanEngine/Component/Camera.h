@@ -7,22 +7,22 @@ namespace Lan
 	class Camera : public Component
 	{
 	public:
-		Camera();
-		Camera(float width, float height);
-		Camera(fvec2& size);
-		Camera(fvec2&& size);
+		Camera(Object* parent);
+		Camera(Object* parent, float width, float height);
+		Camera(Object* parent, fvec2& size);
+		Camera(Object* parent, fvec2&& size);
 		virtual ~Camera();
 
-		void setViewSize(fvec2& size);
-		void setViewSize(fvec2&& size);
-		const fvec2& getViewSize() const;
+		void SetViewSize(fvec2& size);
+		void SetViewSize(fvec2&& size);
+		const fvec2& GetViewSize() const;
 
 	protected:
-		virtual void onDraw() override;
+		virtual void OnDraw() override;
 
 	private:
-		void createViewBuffer();
-		void updateViewBuffer();
+		void CreateViewBuffer();
+		void UpdateViewBuffer();
 
 		fvec2 m_Size;
 

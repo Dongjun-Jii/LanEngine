@@ -6,9 +6,9 @@ namespace Lan
 	class Singleton
 	{
 	public:
-		static void createInstance();
-		static T& getInstance();
-		static void destroyInstance();
+		static void CreateInstance();
+		static T& GetInstance();
+		static void DestroyInstance();
 
 	protected:
 		Singleton() {};

@@ -3,9 +3,9 @@
 namespace Lan
 {
 	template<typename T, typename... Args>
-	bool SceneManager::addScene(tstring name, Args&&... args)
+	bool SceneManager::AddScene(tstring name, Args&&... args)
 	{
-		if (!isSceneExist(name))
+		if (!IsSceneExist(name))
 		{
 			Scene* scene = new T(args...);
 			m_Scenes.insert(make_pair(name, scene));

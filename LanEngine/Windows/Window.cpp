@@ -22,7 +22,7 @@ namespace Lan
 
 	}
 
-	void Window::initialize(HINSTANCE instanceHandle, ivec2 size)
+	void Window::Initialize(HINSTANCE instanceHandle, ivec2 size)
 	{
 		if (m_IsInitialized)
 		{
@@ -58,7 +58,7 @@ namespace Lan
 		UpdateWindow(m_WindowHandle);
 	}
 
-	void Window::peekMessage()
+	void Window::Update()
 	{
 		MSG msg = {};
 		while (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
@@ -73,27 +73,27 @@ namespace Lan
 		}
 	}
 
-	const HWND& Window::getHandle() const
+	const HWND& Window::GetHandle() const
 	{
 		return m_WindowHandle;
 	}
 
-	bool Window::shouldClose() const
+	bool Window::ShouldClose() const
 	{
 		return m_ShouldClose;
 	}
 
-	bool Window::isActive() const
+	bool Window::IsActive() const
 	{
 		return m_IsActive;
 	}
 
-	void Window::setActive(bool active)
+	void Window::SetActive(bool active)
 	{
 		m_IsActive = active;
 	}
 
-	bool Window::setWindowName(tstring windowName) const
+	bool Window::SetWindowName(tstring windowName) const
 	{
 		return SetWindowTextA(m_WindowHandle, windowName.c_str()) != false;
 	}
@@ -107,20 +107,20 @@ namespace Lan
 				return 0;
 			case WM_ENTERSIZEMOVE:
 			case WM_NCRBUTTONDOWN:
-				Window::getInstance().setActive(false);
+				Window::GetInstance().SetActive(false);
 				break;
 			case WM_EXITSIZEMOVE:
 			case WM_EXITMENULOOP:
-				Window::getInstance().setActive(true);
+				Window::GetInstance().SetActive(true);
 				break;
 			case WM_LBUTTONDOWN:
-				Input::getInstance().setMouseState(MouseButton::Left, true); break;
+				Input::GetInstance().SetMouseState(MouseButton::Left, true); break;
 			case WM_LBUTTONUP:
-				Input::getInstance().setMouseState(MouseButton::Left, false); break;
+				Input::GetInstance().SetMouseState(MouseButton::Left, false); break;
 			case WM_RBUTTONDOWN:
-				Input::getInstance().setMouseState(MouseButton::Right, true); break;
+				Input::GetInstance().SetMouseState(MouseButton::Right, true); break;
 			case WM_RBUTTONUP:
-				Input::getInstance().setMouseState(MouseButton::Right, false); break;
+				Input::GetInstance().SetMouseState(MouseButton::Right, false); break;
 			case WM_SYSCOMMAND:
 				//SC_KEYMENU == (wParam & 0xFFF0)
 

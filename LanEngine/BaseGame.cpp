@@ -3,23 +3,23 @@
 
 namespace Lan
 {
-	void BaseGame::initialize()
+	void BaseGame::Initialize()
 	{
-		onInitialize();
+		OnInitialize();
 	}
 
-	void BaseGame::update(Context& context)
+	void BaseGame::Update(Context& context)
 	{
-		onUpdate(context);
+		OnUpdate(context);
 	}
 
-	void BaseGame::draw()
+	void BaseGame::Draw()
 	{
-		onDraw();
+		OnDraw();
 	}
 
-	void BaseGame::destroy()
+	void BaseGame::Destroy()
 	{
-		onDestroy();
+		OnDestroy();
 	}
 }

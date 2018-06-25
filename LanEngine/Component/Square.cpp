@@ -6,19 +6,20 @@
 
 namespace Lan
 {
-	Square::Square(DirectX::XMFLOAT2 & size) :
-		Square(std::move(size))
+	Square::Square(Object* parent, DirectX::XMFLOAT2 & size) :
+		Square(parent, std::move(size))
 	{
 
 	}
 
-	Square::Square(DirectX::XMFLOAT2 && size):
+	Square::Square(Object* parent, DirectX::XMFLOAT2 && size):
+		Component(parent),
 		m_Size(size),
 		m_VertexBuffer(nullptr),
 		m_IndexBuffer(nullptr),
 		m_ConstantBuffer(nullptr)
 	{
-		ID3D11Device* device = GraphicsManager::getInstance().getDevice();
+		ID3D11Device* device = GraphicsManager::GetInstance().GetDevice();
 		HRESULT result;
 
 		fvec4 vertices[4] = 
@@ -118,19 +119,19 @@ namespace Lan
 		}
 	}
 
-	void Square::setSize(DirectX::XMFLOAT2 & size)
+	void Square::SetSize(DirectX::XMFLOAT2 & size)
 	{
 		m_Size = size;
 	}
 
-	void Square::setSize(DirectX::XMFLOAT2 && size)
+	void Square::SetSize(DirectX::XMFLOAT2 && size)
 	{
 		m_Size = size;
 	}
 
-	void Square::resizeVertexBuffer()
+	void Square::ResizeVertexBuffer()
 	{
-		ID3D11DeviceContext * deviceContext = GraphicsManager::getInstance().getDeviceContext();
+		ID3D11DeviceContext * deviceContext = GraphicsManager::GetInstance().GetDeviceContext();
 
 		D3D11_MAPPED_SUBRESOURCE vmr;
 		deviceContext->Map(m_VertexBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &vmr);
@@ -146,27 +147,14 @@ namespace Lan
 		deviceContext->Unmap(m_VertexBuffer, 0);
 	}
 
-	void Square::onDraw()
+	void Square::OnDraw()
 	{
-		ID3D11DeviceContext * deviceContext = GraphicsManager::getInstance().getDeviceContext();
+		ID3D11DeviceContext * deviceContext = GraphicsManager::GetInstance().GetDeviceContext();
 
-		UINT stride = sizeof(DirectX::XMFLOAT4);
+		UINT stride = sizeof(fvec4);
 		UINT offset = 0;
 
-		DirectX::XMMATRIX translate = DirectX::XMMatrixTranslation(
-			getParent().getTransform().position.x, 
-			getParent().getTransform().position.y, 
-			static_cast<float>(getParent().getTransform().depth));
-
-		DirectX::XMMATRIX rotate = DirectX::XMMatrixRotationZ(
-			getParent().getTransform().angle);
-
-		DirectX::XMMATRIX scale = DirectX::XMMatrixScaling(
-			getParent().getTransform().size.x, 
-			getParent().getTransform().size.y,
-			1.0f);
-
-		DirectX::XMMATRIX world = scale * rotate * translate;
+		matrix world = GetParent().GetTransform().GetWorldMatrix();
 
 		D3D11_MAPPED_SUBRESOURCE vmr;
 		deviceContext->Map(m_ConstantBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &vmr);
